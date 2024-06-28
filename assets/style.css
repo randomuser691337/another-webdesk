@@ -1,0 +1,464 @@
+:root {
+    --sh1: #9999FF;
+    --sh2: #bbbbff;
+    --bg1: #eeeeff;
+    --bg2: #ccccff; 
+    --accent: 60, 70, 235;
+    --acc: var(--accent);
+    --ui1: rgb(255, 255, 255, 0.5);
+    --ui2: #ffffff;
+    --ui3: #dddddd;
+    --font: #000;
+    --bl1: 12px;
+    --bl2: 8px;
+    --rad1: 16px;
+    --rad2: 12px;
+    --rad3: 8px;
+    --fz1: 15px;
+    --fz2: 12px;
+}
+
+#background {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    width: 100%;
+    z-index: -2;
+    height: 100%;
+    background: linear-gradient(180deg, var(--bg2), var(--bg1));
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url(./fonts/Poppins-Regular.ttf);
+}
+
+@font-face {
+    font-family: 'PoppinsB';
+    src: url(./fonts/Poppins-Bold.ttf);
+}
+
+@font-face {
+    font-family: 'PoppinsM';
+    src: url(./fonts/Poppins-Medium.ttf);
+}
+
+@font-face {
+    font-family: 'MonoS';
+    src: url(./fonts/mono.ttf);
+}
+
+body {
+    background-color: #000;
+    animation: fade 1.3s;
+    color: var(--font);
+    font-family: 'Poppins', Arial;
+    text-align: center;
+    font-size: var(--fz1);
+}
+
+.bold {
+    font-family: "PoppinsB";
+}
+
+.med {
+    font-family: "PoppinsM";
+}
+
+html,
+body {
+    overscroll-behavior: none;
+}
+
+button {
+    cursor: pointer;
+    font-family: 'PoppinsM', Arial;
+}
+
+#fucked {
+    position: fixed;
+    left: 0px; top: 0px; bottom: 0px; right: 0px;
+    background-color: #000;
+    z-index: 9999;
+    display: none;
+}
+
+.center {
+    position: fixed;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes fade {
+    0% {
+        opacity: 0%;
+    }
+
+    10% {
+        opacity: 0%;
+    }
+
+    100% {
+        opacity: 100%;
+    }
+}
+
+.setupi {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--rad2);
+}
+
+
+p {
+    padding: 0px;
+    margin: 3px;
+    font-family: 'Poppins', Arial;
+    font-size: var(--fz1);
+}
+
+@media (max-width:400px) {
+    .setup {
+        width: 85% !important;
+    }
+
+    .winb {
+        width: 15px !important;
+        height: 15px !important;
+        margin-right: 9px;
+    }
+
+    @media (max-height:700px) {
+        .setup {
+            height: 80% !important;
+        }
+    }
+}
+
+.setupbox {
+    position: fixed;
+    transform: translate(-50%, -50%) scale(1.0);
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 150px 30px;
+    left: 50%;
+    top: 50%;
+    padding: 6px;
+    border: 1px solid var(--ui3);
+    background-color: var(--ui1);
+    border-radius: var(--rad1);
+    max-width: 85% !important;
+    animation: setup 1.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    width: 500px; height: 360px;
+    overflow: auto !important;
+    z-index: 4 !important;
+}
+
+.setb {
+    padding: 8px;
+    overflow: auto !important;
+    padding-bottom: 25px;
+}
+
+.window {
+    position: absolute;
+    border-radius: var(--rad1);
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 150px 30px;
+    border: 1px solid var(--ui3);
+    max-width: 85%;
+    max-height: 90%;
+    width: auto;
+    height: auto;
+    z-index: 5;
+    background-color: var(--ui1);
+    display: none;
+    animation: notif3 0.3s;
+    overflow: auto !important;
+    -webkit-backdrop-filter: blur(var(--bl1));
+    backdrop-filter: blur(var(--bl1));
+}
+
+.content {
+    padding: 10px;
+}
+
+.tb {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px;
+    padding-left: 11px;
+    padding-right: 11px;
+    background-color: var(--ui2);
+    width: 100%;
+    box-sizing: border-box;
+    user-select: none;
+    border-top-left-radius: 13px;
+    border-top-right-radius: 13px;
+    border-bottom: 1px solid var(--ui3);
+    transition: 0.05s;
+}
+
+.title {
+    flex-grow: 1;
+    text-align: right;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.tnav {
+    display: flex;
+}
+
+.winb {
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(0, 0, 0, 0) important;
+    margin-right: 7px;
+    border-radius: 50%;
+    background-color: rgba(127, 127, 127, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.winb:active {
+    opacity: 75%;
+}
+
+.red {
+    background-color: rgb(255, 59, 48);
+}
+
+.yel {
+    background-color: rgb(255, 204, 0);
+}
+
+.gre {
+    background-color: rgb(52, 199, 89);
+}
+
+.setupbar {
+    width: 100%;
+    border: 1px solid var(--ui2);
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2px;
+    border-radius: var(--rad2);
+    text-align: left;
+    margin-bottom: 6px;
+    background-color: var(--ui1);
+}
+
+.title {
+    flex-grow: 1;
+    text-align: right;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.tnav {
+    display: flex;
+}
+
+@keyframes setup {
+    0% {
+        transform: translate(-50%, -50%) scale(0.1);
+    }
+
+    20% {
+        transform: translate(-50%, -50%) scale(0.1);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.h2 {
+    font-size: 20px;
+    font-family: 'PoppinsM', Arial;
+}
+
+.b1 {
+    background-color: rgba(var(--acc), 0.25);
+    border-radius: var(--rad2);
+    font-size: var(--fz1);
+    padding: 6px 9px;
+    margin: 1px;
+    transition: 0.08s ease-in-out;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.b1:hover {
+    background-color: rgba(var(--acc), 0.35);
+    border: 1px solid rgba(var(--acc), 0.6);
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 20px 4px;
+}
+
+.b1:active {
+    transform: scale(0.8);
+    background-color: rgba(var(--acc), 0.15);
+}
+
+.b4 {
+    padding: 1px 3px;
+    border-radius: 8px;
+    background-color: rgba(var(--accent), 0.2);
+    font-size: var(--fz2);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.05s ease-in-out;
+    margin: 1px;
+}
+
+.b4:hover {
+    border: 1px solid rgba(var(--accent), 0.35);
+}
+
+.b4:active {
+    background-color: rgba(var(--accent), 0.35);
+    border-color: rgba(var(--accent), 0.8);
+    transform: scale(0.90);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.hide {
+    display: none;
+}
+
+.circle {
+    position: fixed;
+    left: -10vw; top: -10vw;
+    width: 25vw; height: 25vw;
+    background: linear-gradient(45deg, var(--sh1), var(--sh2));
+    border-radius: 50%;
+    z-index: 0;
+    box-shadow: var(--sh2) 0px 0px 400px 80px;
+} 
+
+.circle2 {
+    position: fixed;
+    right: -10vw; bottom: -10vw;
+    width: 25vw; height: 25vw;
+    background: linear-gradient(45deg, var(--sh1), var(--sh2));
+    border-radius: 50%;
+    z-index: 0;
+    box-shadow: var(--sh1) 0px 0px 400px 80px;
+}
+
+.i1 {
+    padding: 5px 7px;
+    border-radius: var(--rad2);
+    border: 2px solid rgba(var(--accent), 0.4);
+    background-color: rgba(var(--accent), 0.2);
+    font-size: var(--fz1);
+    color: var(--fontc);
+    width: 100%;
+    box-sizing: border-box;
+    font-family: 'PoppinsM', Arial;
+    margin-bottom: 2px;
+    transition: 0.05s;
+    outline: none;
+}
+
+.i1:focus {
+    background-color: rgba(var(--accent), 0.35);
+}
+
+#notif {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    bottom: 50px;
+    width: 250px;
+    overflow-x: visible;
+    overflow-y: auto !important;
+}
+
+.notif {
+    width: 100%;
+    box-sizing: border-box;
+    background-color: var(--ui1);
+    border: 1px solid var(--ui3);
+    padding: 8px;
+    border-radius: var(--rad1);
+    margin-bottom: 5px;
+    animation: notif 0.3s;
+    cursor: pointer;
+    text-align: left;
+    -webkit-backdrop-filter: blur(var(--bl1));
+    backdrop-filter: blur(var(--bl1));
+}
+
+.notif2 {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid var(--bordercolor);
+    padding: 7px;
+    border-radius: var(--rad2);
+    margin-bottom: 2px;
+    font-size: var(--fz2) !important;
+    cursor: pointer;
+    -webkit-backdrop-filter: blur(var(--bl1));
+    backdrop-filter: blur(var(--bl1));
+}
+
+@keyframes notif {
+    0% {
+        right: -270px;
+        opacity: 0%;
+    }
+
+    100% {
+        opacity: 100%;
+        right: 0px;
+    }
+}
+
+.list {
+    padding: 7px;
+    background-color: var(--ui2);
+    border-radius: var(--rad2);
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 5px;
+}
+
+.rb {
+    background-color: rgba(230, 30, 30, 0.5);
+}
+
+.taskbar {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    left: 4px;
+    bottom: 4px;
+    right: 4px;
+    border-radius: var(--rad1);
+    padding: 4px;
+    border: 1px solid var(--ui2);
+    background-color: var(--ui1);
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 75px 15px;
+}
+
+.cm {
+    position: fixed;
+    left: 50%; top: 50%;
+    padding: 12px;
+    border-radius: var(--rad2);
+    background-color: var(--ui2);
+    border: 1px solid var(--ui3);
+    transform: translate(-50%, -50%);
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 75px 15px;
+    z-index: 10;
+}

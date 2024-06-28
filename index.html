@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="./assets/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="shortcut icon" href="./assets/img/favicon.png">
+    <link rel="apple-touch-icon" href="./assets/img/noround.png">
+    <title>WebDesk</title>
+</head>
+<script>
+    var deskid;
+    var setupd;
+</script>
+<style>
+    .b2 {
+        border-radius: 12px;
+        box-sizing: border-box;
+        width: 100%;
+        padding: 6px;
+        padding-left: 8px;
+        background-color: var(--ui2);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 3px;
+    }
+
+    .old {
+        background-color: #ffddee;
+    }
+
+    body {
+        background-color: #9999ff;
+    }
+</style>
+
+<body>
+    <div id="setuparea">
+        <div class="setupblur">
+
+        </div>
+        <div class="setupbox" style="width: 500px; height: 360px;">
+            <div class="setupbar" id="setupbar1">
+                <div class="tnav"><button class="b4" onclick="options();">Settings</button></div>
+                <div class="title"><button class="time b4">--:--</button></div>
+            </div>
+            <div id="setup1" class="setb">
+                <img src="./assets/img/setup/first.svg" class="setupi"></img>
+                <p class="h2">Select a version to boot</p>
+                <p style="margin-bottom: 8px;">Anything light red is no longer supported.</p>
+                <div class="b2">
+                    <div class="tnav">WebDesk 0.0.9 Beta 3</div>
+                    <div class="title"><button class="b4">Recovery</button><button class="b4" onclick="op('./webdesk.html');">Boot</button></div>
+                </div>
+                <div class="b2 old">
+                    <div class="tnav">WebDesk 0.0.9 Beta 2</div>
+                    <div class="title"><button class="b4"
+                            onclick="op('https://webdesk-beta.vercel.app/rec.html');">Recovery</button><button
+                            class="b4" onclick="op('https://webdesk-beta.vercel.app');">Boot</button></div>
+                </div>
+                <div class="b2 old">
+                    <div class="tnav">WebDesk 0.0.9 Beta 1</div>
+                    <div class="title"><button class="b4" onclick="op('https://betawebdesk.vercel.app');">Boot</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    function op(src) {
+        window.location.href = src;
+    }
+</script>
+
+</html>
+<script src="./assets/lib/jq.js"></script>
+<script src="./assets/lib/peer.js"></script>
+<script src="./assets/code/core.js"></script>
+<script src="./assets/code/wm.js"></script>
+<script src="./assets/code/services.js"></script>
+<script src="./assets/code/ui.js"></script>
+<script src="./assets/code/fs.js"></script>
