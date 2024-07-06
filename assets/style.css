@@ -75,6 +75,7 @@ body {
 button {
     cursor: pointer;
     font-family: 'PoppinsM', Arial;
+    color: var(--font);
 }
 
 #fucked {
