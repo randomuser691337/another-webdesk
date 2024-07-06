@@ -28,7 +28,7 @@ var app = {
         const transfer = tk.c('div', main, 'setb hide');
         tk.img('./assets/img/setup/quick.png', 'setupi', transfer);
         tk.p('Quick Start', 'h2', transfer);
-        tk.p('Open Backup -> Migrate on the other WebDesk, and enter the code below to copy your data. If you have the old beta, then click "Transfer from old WebDesk".', undefined, transfer);
+        tk.p('Open Backup -> Migrate on the other WebDesk, and enter the code below to copy your data. If you have the old beta, then click "Copy from old WebDesk".', undefined, transfer);
         tk.p('Quick Start', 'h2 deskid', transfer);
         tk.cb('b1', 'No thanks', () => ui.sw2(transfer, warn), transfer);
         tk.cb('b1', 'Copy from old WebDesk', () => window.open(`http://localhost:330?mignew=${deskid}`, '_blank'), transfer);
@@ -42,9 +42,13 @@ var app = {
         const warn = tk.c('div', main, 'setb hide');
         tk.img('./assets/img/noround.png', 'setupi', warn);
         tk.p(`WebDesk Online services`, 'h2', warn);
-        tk.p('WebDesk makes an 8-digit ID called a DeskID for you. Others can use this ID to send you files or call you. Your DeskID is <span class="deskid bold"></span>.', undefined, warn);
-        tk.p('In order to recieve calls and files from others, WebDesk needs to be open. When not in use, WebDesk minimizes its footprint, keeping it lightweight.', undefined, warn);
-        tk.cb('b1', 'Got it', function () { ui.sw2(warn, user) }, warn);
+        tk.p('WebDesk makes an ID called a DeskID for you. Others can use this ID to send you files or call you.', undefined, warn);
+        tk.p('To recieve calls and files from others, WebDesk needs to be open. When not in use, WebDesk uses less resources', undefined, warn);
+        tk.cb('b1', `What's my DeskID?`, function () {
+            const box = wm.cm();
+            tk.p(`Your DeskID is <span class="deskid med">unknown</span>. You'll need to finish setup to use this ID.`, undefined, box);
+            tk.cb('b1 rb', 'Got it', undefined, box);
+        }, warn); tk.cb('b1', 'Got it', function () { ui.sw2(warn, user) }, warn);
         // user menu
         const user = tk.c('div', main, 'setb hide');
         tk.img('./assets/img/setup/user.svg', 'setupi', user);
@@ -72,6 +76,6 @@ var app = {
         tk.p('Summary', 'h2', sum);
         tk.p('WebDesk <span class="med notifperms">cannot</span> send notifications', undefined, sum);
         tk.p(`WebDesk's current user is <span class="med name">undefined</span>`, undefined, sum);
-        tk.cb('b1 rb', 'Erase & restart', function () { fs.erase('reboot'); }, sum);tk.cb('b1', 'Finish setup', function () { ui.sw2(warn, user) }, sum);
+        tk.cb('b1 rb', 'Erase & restart', function () { fs.erase('reboot'); }, sum); tk.cb('b1', 'Finish setup', function () { ui.sw2(warn, user) }, sum);
     }
 }
