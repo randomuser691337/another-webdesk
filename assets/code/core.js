@@ -81,12 +81,19 @@ var wd = {
             }
         });
     },
-    desktop: function (name, deskid) {
-        taskbar = tk.c('div', document.body, 'taskbar');
-        const lefttb = tk.c('div', taskbar, 'tnav');
-        const titletb = tk.c('div', taskbar, 'title');
-        const start = tk.cb('b1', 'Apps', () => wm.notif(`Your DeskID is ${deskid}`, `Desktop initialized as ${name}`), lefttb);
-        tk.cb('b1 time', '--:--', () => wm.notif(`In progress`, `Control Center`), titletb);
+    desktop: function (name, deskid, waitopt) {
+        function desktopgo() {
+            taskbar = tk.c('div', document.body, 'taskbar');
+            const lefttb = tk.c('div', taskbar, 'tnav');
+            const titletb = tk.c('div', taskbar, 'title');
+            const start = tk.cb('b1', 'Apps', () => wm.notif(`Your DeskID is ${deskid}`, `Desktop initialized as ${name}`), lefttb);
+            tk.cb('b1 time', '--:--', () => wm.notif(`In progress`, `Control Center`), titletb);
+        }
+        if (waitopt === "wait") {
+            setTimeout(function () { desktopgo(); }, 700)
+        } else {
+            desktopgo();
+        }
     },
     clock: function () {
         const currentTime = new Date();
@@ -104,6 +111,9 @@ var wd = {
     },
     finishsetup: function (name, div1, div2) {
         ui.sw2(div1, div2); ui.masschange('name', name); fs.write('/user/info/name', name);
+    },
+    reboot: function () {
+        window.location.reload();
     }
 }
 

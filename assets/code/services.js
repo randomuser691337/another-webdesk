@@ -1,19 +1,19 @@
 var ptp = {
     go: async function (id) {
         let retryc = 0;
-    
+
         async function attemptConnection() {
             peer = new Peer(id);
-    
+
             peer.on('open', (peerId) => {
                 ui.masschange('deskid', peerId);
-                deskid = peerId;
+                sys.deskid = peerId;
                 console.log('<i> DeskID is online. ID: ' + deskid);
             });
-    
+
             peer.on('error', async (err) => {
                 console.log(`<!> whoops: ${err}`);
-                if (!deskid && retryc < 5) {
+                if (!sys.deskid && retryc < 5) {
                     console.log('<!> DeskID failed to register, trying again...');
                     retryc++;
                     setTimeout(attemptConnection, 10000);
@@ -24,22 +24,22 @@ var ptp = {
                     snack('Failed to connect.');
                 }
             });
-    
+
             peer.on('connection', (conn) => {
                 conn.on('data', (data) => {
                     handleData(conn, data);
                 });
             });
-    
+
             peer.on('call', (call) => {
                 globcall = call;
                 wd.opapp('calleri');
                 ui.play('./assets/other/webdrop.ogg');
             });
         }
-    
+
         attemptConnection();
-    }
+    },
 }
 
 function handleData(conn, data) {

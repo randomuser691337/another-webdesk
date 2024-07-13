@@ -59,6 +59,9 @@ function idbOperation(operation, params, opt, requestId) {
         case 'erase':
             fs2.erase(params);
             break;
+        case 'list':
+            fs2.list(params);
+            break;
         default:
             self.postMessage({ type: 'error', data: 'Unknown operation', requestId });
     }
@@ -126,5 +129,5 @@ var fs2 = {
         deleteRequest.onerror = function (event) {
             console.log("<!> Error erasing: ", event.target.error);
         };
-    }
+    },
 };

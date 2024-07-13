@@ -28,7 +28,7 @@ var app = {
         const transfer = tk.c('div', main, 'setb hide');
         tk.img('./assets/img/setup/quick.png', 'setupi', transfer);
         tk.p('Quick Start', 'h2', transfer);
-        tk.p('Open Backup -> Migrate on the other WebDesk, and enter the code below to copy your data. If you have the old beta, then click "Copy from old WebDesk".', undefined, transfer);
+        tk.p('To copy your data, open Backup -> Migrate on the other WebDesk, and enter the code below. If you have the old beta, then click "Copy from old WebDesk".', undefined, transfer);
         tk.p('Quick Start', 'h2 deskid', transfer);
         tk.cb('b1', 'No thanks', () => ui.sw2(transfer, warn), transfer);
         tk.cb('b1', 'Copy from old WebDesk', () => window.open(`http://localhost:330?mignew=${deskid}`, '_blank'), transfer);
@@ -53,7 +53,7 @@ var app = {
         const user = tk.c('div', main, 'setb hide');
         tk.img('./assets/img/setup/user.svg', 'setupi', user);
         tk.p('User & Permissions', 'h2', user);
-        tk.p(`Set up a user for WebDesk to store all your things in, and also set up WebDesk's permissions.`, undefined, user);
+        tk.p(`Set up a user for WebDesk to store all your things in, and also set up WebDesk's permissions. Data is stored on your device only.`, undefined, user);
         const input = tk.c('input', user, 'i1');
         input.placeholder = "Enter a name to use with WebDesk/it's services";
         const notif = tk.c('div', user);
@@ -76,6 +76,9 @@ var app = {
         tk.p('Summary', 'h2', sum);
         tk.p('WebDesk <span class="med notifperms">cannot</span> send notifications', undefined, sum);
         tk.p(`WebDesk's current user is <span class="med name">undefined</span>`, undefined, sum);
-        tk.cb('b1 rb', 'Erase & restart', function () { fs.erase('reboot'); }, sum); tk.cb('b1', 'Finish setup', function () { ui.sw2(warn, user) }, sum);
-    }
+        tk.cb('b1 rb', 'Erase & restart', function () { fs.erase('reboot'); }, sum); tk.cb('b1', 'Finish setup', function () { wd.reboot(); }, sum);
+    },
+    files: function () {
+        
+    },
 }

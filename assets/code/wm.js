@@ -70,7 +70,6 @@ var wm = {
             log('   <i> Button: ' + check);
         }
     },
-    
     notif: function (message, name, onclick) {
         const note = document.createElement('div');
         note.classList = "notif";
@@ -87,7 +86,7 @@ var wm = {
         ui.play('./assets/other/webdrop.ogg');
         note.addEventListener('click', function () { dest(id, '100'); });
         note2.addEventListener('click', function () { dest(id2, '100'); });
-        setTimeout(function () { dest(id, '100'); }, 20000);
+        setTimeout(function () { ui.dest(id, 200); }, 20000);
         dest('defnotif');
     },
     cm: function () {

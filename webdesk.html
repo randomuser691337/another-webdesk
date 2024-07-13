@@ -11,8 +11,11 @@
     <title>WebDesk</title>
 </head>
 <script>
-    var deskid;
-    var setupd;
+    var sys = {
+        deskid: undefined,
+        setupd: undefined,
+        migrid: 1,
+    }
 </script>
 
 <body>
@@ -20,13 +23,6 @@
     <div class="circle"></div>
     <div class="circle2"></div>
     <div id="setuparea">
-    </div>
-    <div id="fucked">
-        <div class="center">
-            <img src="./assets/img/favicon.png" style="width: 140px; height: 140px;"></img>
-            <p style="color: #fff; margin-top: 12px;" class="bold">Please wait</p>
-            <p style="color: #fff; margin-top: 4px;">Stage 1/4: Backup</p>
-        </div>
     </div>
     <div id="notif"></div>
 </body>
@@ -44,19 +40,19 @@
 <script src="./assets/code/apps.js"></script>
 <script>
     async function boot() {
-        const sd = await fs.read('/system/check');
+        const sd = await fs.read('/user/info/name');
         if (sd) {
             const name = await fs.read('/user/info/name');
             const deskid = await fs.read('/system/deskid');
-            await wd.desktop(name, deskid);
+            await wd.desktop(name, deskid, 'wait');
             await ptp.go(deskid);
-            setupd = true;
+            sys.setupd = true;
         } else {
             const id = gen(8);
             await ptp.go(id);
             await fs.write('/system/deskid', id);
             app.setup();
-            setupd = false;
+            sys.setupd = false;
         }
 
         const dropZone = document.body;

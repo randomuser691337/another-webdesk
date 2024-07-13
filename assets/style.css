@@ -2,7 +2,7 @@
     --sh1: #9999FF;
     --sh2: #bbbbff;
     --bg1: #eeeeff;
-    --bg2: #ccccff; 
+    --bg2: #ccccff;
     --accent: 60, 70, 235;
     --acc: var(--accent);
     --ui1: rgb(255, 255, 255, 0.5);
@@ -52,7 +52,7 @@
 
 body {
     background-color: #000;
-    animation: fade 1.3s;
+    animation: fade 0.7s;
     color: var(--font);
     font-family: 'Poppins', Arial;
     text-align: center;
@@ -80,7 +80,10 @@ button {
 
 #fucked {
     position: fixed;
-    left: 0px; top: 0px; bottom: 0px; right: 0px;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
     background-color: #000;
     z-index: 9999;
     display: none;
@@ -88,7 +91,8 @@ button {
 
 .center {
     position: fixed;
-    left: 50%; top: 50%;
+    left: 50%;
+    top: 50%;
     transform: translate(-50%, -50%);
 }
 
@@ -111,7 +115,6 @@ button {
     height: 50px;
     border-radius: var(--rad2);
 }
-
 
 p {
     padding: 0px;
@@ -141,7 +144,7 @@ p {
 .setupbox {
     position: fixed;
     transform: translate(-50%, -50%) scale(1.0);
-    box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 150px 30px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 150px 30px;
     left: 50%;
     top: 50%;
     padding: 6px;
@@ -150,7 +153,8 @@ p {
     border-radius: var(--rad1);
     max-width: 85% !important;
     animation: setup 1.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-    width: 500px; height: 360px;
+    width: 550px;
+    height: 400px;
     overflow: auto !important;
     z-index: 4 !important;
 }
@@ -305,7 +309,7 @@ p {
 }
 
 .b1:active {
-    transform: scale(0.8);
+    transform: scale(0.88);
     background-color: rgba(var(--acc), 0.15);
 }
 
@@ -337,22 +341,52 @@ p {
 
 .circle {
     position: fixed;
-    left: -10vw; top: -10vw;
-    width: 25vw; height: 25vw;
+    left: -10vw;
+    top: -10vw;
+    width: 25vw;
+    height: 25vw;
     background: linear-gradient(45deg, var(--sh1), var(--sh2));
     border-radius: 50%;
     z-index: 0;
     box-shadow: var(--sh2) 0px 0px 300px 60px;
-} 
+    animation: circle 1.3s;
+}
+
+@keyframes circle {
+    0% {
+        left: -35vw;
+        top: -35vw;
+    }
+
+    100% {
+        left: -10vw;
+        top: -10vw;
+    }
+}
 
 .circle2 {
     position: fixed;
-    right: -10vw; bottom: -10vw;
-    width: 25vw; height: 25vw;
+    right: -10vw;
+    bottom: -10vw;
+    width: 25vw;
+    height: 25vw;
     background: linear-gradient(45deg, var(--sh1), var(--sh2));
     border-radius: 50%;
     z-index: 0;
     box-shadow: var(--sh1) 0px 0px 300px 60px;
+    animation: circle2 1.3s;
+}
+
+@keyframes circle2 {
+    0% {
+        right: -35vw;
+        bottom: -35vw;
+    }
+
+    100% {
+        right: -10vw;
+        bottom: -10vw;
+    }
 }
 
 .i1 {
@@ -449,17 +483,35 @@ p {
     padding: 4px;
     border: 1px solid var(--ui2);
     background-color: var(--ui1);
-    box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 75px 15px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 75px 15px;
+    animation: tb 1.0s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    backdrop-filter: blur(var(--bl2));
+    -webkit-backdrop-filter: blur(var(--bl2));
+}
+
+@keyframes tb {
+    0% {
+        bottom: -120px;
+    }
+
+    70% {
+        bottom: 12px;
+    }
+
+    100% {
+        bottom: 4px;
+    }
 }
 
 .cm {
     position: fixed;
-    left: 50%; top: 50%;
+    left: 50%;
+    top: 50%;
     padding: 12px;
     border-radius: var(--rad2);
     background-color: var(--ui2);
     border: 1px solid var(--ui3);
     transform: translate(-50%, -50%);
-    box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 75px 15px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 75px 15px;
     z-index: 10;
 }
