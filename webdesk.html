@@ -16,6 +16,12 @@
         setupd: undefined,
         migrid: 1,
     }
+
+    var el = {
+        taskbar: undefined,
+        sm: undefined,
+        tr: undefined,
+    }
 </script>
 
 <body>
@@ -51,7 +57,7 @@
             const id = gen(8);
             await ptp.go(id);
             await fs.write('/system/deskid', id);
-            app.setup();
+            app.setup.init();
             sys.setupd = false;
         }
 

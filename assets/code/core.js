@@ -82,15 +82,38 @@ var wd = {
         });
     },
     desktop: function (name, deskid, waitopt) {
+        function startmenu() {
+            if (el.sm == undefined) {
+                el.sm = tk.c('div', document.body, 'tbmenu');
+                const btm = el.taskbar.getBoundingClientRect();
+                el.sm.style.bottom = btm.height + btm.x + 4 + "px";
+                for (var key in app) {
+                    if (app.hasOwnProperty(key)) {
+                        if (app[key].hasOwnProperty("runs") && app[key].runs === true) {
+                            console.log('<i> This app can run normally!');
+                            const btn = tk.cb('b1', app[key].name, app[key].init.bind(app[key]), el.sm);
+                            btn.addEventListener('click', function () {
+                                el.sm.remove();
+                                el.sm = undefined;
+                            });
+                        }
+                    }
+                }
+            } else {
+                el.sm.remove();
+                el.sm = undefined;
+            }
+        }
         function desktopgo() {
-            taskbar = tk.c('div', document.body, 'taskbar');
-            const lefttb = tk.c('div', taskbar, 'tnav');
-            const titletb = tk.c('div', taskbar, 'title');
-            const start = tk.cb('b1', 'Apps', () => wm.notif(`Your DeskID is ${deskid}`, `Desktop initialized as ${name}`), lefttb);
+            el.taskbar = tk.c('div', document.body, 'taskbar');
+            const lefttb = tk.c('div', el.taskbar, 'tnav');
+            const titletb = tk.c('div', el.taskbar, 'title');
+            const start = tk.cb('b1', 'Apps', () => startmenu(), lefttb);
+            el.tr = tk.c('div', lefttb);
             tk.cb('b1 time', '--:--', () => wm.notif(`In progress`, `Control Center`), titletb);
         }
         if (waitopt === "wait") {
-            setTimeout(function () { desktopgo(); }, 700)
+            setTimeout(function () { desktopgo(); }, 700);
         } else {
             desktopgo();
         }

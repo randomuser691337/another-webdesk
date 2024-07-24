@@ -177,7 +177,6 @@ p {
     z-index: 5;
     background-color: var(--ui1);
     display: none;
-    animation: notif3 0.3s;
     overflow: auto !important;
     -webkit-backdrop-filter: blur(var(--bl1));
     backdrop-filter: blur(var(--bl1));
@@ -191,7 +190,7 @@ p {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 7px;
+    padding: 9px;
     padding-left: 11px;
     padding-right: 11px;
     background-color: var(--ui2);
@@ -204,16 +203,18 @@ p {
     transition: 0.05s;
 }
 
+.tnav {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+}
+
 .title {
     flex-grow: 1;
     text-align: right;
-    overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-}
-
-.tnav {
-    display: flex;
+    margin-left: 2px;
 }
 
 .winb {
@@ -291,11 +292,16 @@ p {
     font-family: 'PoppinsM', Arial;
 }
 
+.b2 {
+    width: 100%; 
+    box-sizing: border-box;
+}
+
 .b1 {
     background-color: rgba(var(--acc), 0.25);
     border-radius: var(--rad2);
     font-size: var(--fz1);
-    padding: 6px 9px;
+    padding: 5px 8px;
     margin: 1px;
     transition: 0.08s ease-in-out;
     cursor: pointer;
@@ -475,10 +481,10 @@ p {
     position: fixed;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    left: 4px;
-    bottom: 4px;
-    right: 4px;
+    justify-content: flex-start;
+    left: 5px;
+    bottom: 5px;
+    right: 5px;
     border-radius: var(--rad1);
     padding: 4px;
     border: 1px solid var(--ui2);
@@ -487,7 +493,11 @@ p {
     animation: tb 1.0s cubic-bezier(0.25, 1, 0.5, 1) forwards;
     backdrop-filter: blur(var(--bl2));
     -webkit-backdrop-filter: blur(var(--bl2));
+    z-index: 3;
+    overflow-x: auto;
+    white-space: nowrap;
 }
+
 
 @keyframes tb {
     0% {
@@ -514,4 +524,45 @@ p {
     transform: translate(-50%, -50%);
     box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 75px 15px;
     z-index: 10;
+}
+
+.tbmenu {
+    position: fixed;
+    border-radius: var(--rad1);
+    border: 1px solid var(--ui2);
+    background-color: var(--ui1);
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 75px 15px;
+    backdrop-filter: blur(var(--bl2));
+    -webkit-backdrop-filter: blur(var(--bl2));
+    padding: 4px;
+    max-width: 80%;
+    max-height: 80%;
+    height: auto;
+    left: 5px;
+    z-index: 4;
+}
+
+.flist {
+    background-color: transparent;
+    font: var(--font);
+    padding: 4px;
+    border: none;
+    border-radius: 9px;
+}
+
+.flist:hover {
+    background-color: var(--ui2);
+}
+
+.width {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.flists {
+    background-color: transparent;
+    font: var(--font);
+    padding: 1px;
+    border: none;
+    border-radius: 9px;
 }

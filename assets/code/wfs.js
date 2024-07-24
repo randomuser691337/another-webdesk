@@ -23,11 +23,11 @@ request.onupgradeneeded = function (event) {
 self.onmessage = function (event) {
     const { type, operation, params, opt, requestId } = event.data;
     if (type === 'fs') {
-        idbOperation(operation, params, opt, requestId);
+        idbop(operation, params, opt, requestId);
     }
 };
 
-function idbOperation(operation, params, opt, requestId) {
+function idbop(operation, params, opt, requestId) {
     switch (operation) {
         case 'read':
             fs2.read(params)
@@ -61,6 +61,13 @@ function idbOperation(operation, params, opt, requestId) {
             break;
         case 'list':
             fs2.list(params);
+            break;
+        case 'ls':
+            fs2.folder(params).then(result => {
+                self.postMessage({ type: 'result', data: result, requestId });
+            }).catch(error => {
+                self.postMessage({ type: 'error', data: error, requestId });
+            });
             break;
         default:
             self.postMessage({ type: 'error', data: 'Unknown operation', requestId });
@@ -120,7 +127,7 @@ var fs2 = {
 
         const deleteRequest = indexedDB.deleteDatabase("WebDeskDB");
         deleteRequest.onsuccess = function () {
-            console.log("<!> Erased successfully");
+            console.log("<!> WebDesk erased.");
             if (path === "reboot") {
                 self.postMessage({ type: 'reboot' });
             }
@@ -130,4 +137,34 @@ var fs2 = {
             console.log("<!> Error erasing: ", event.target.error);
         };
     },
+    folder: function (path) {
+        return new Promise((resolve, reject) => {
+            const transaction = db.transaction(['main'], 'readonly');
+            const objectStore = transaction.objectStore('main');
+            const items = new Map();
+    
+            objectStore.openCursor().onsuccess = function (event) {
+                const cursor = event.target.result;
+                if (cursor) {
+                    if (cursor.key.startsWith(path)) {
+                        const relativePath = cursor.key.substring(path.length);
+                        const parts = relativePath.split('/');
+    
+                        if (parts.length > 1) {
+                            items.set(parts[0], { path: path + parts[0], name: parts[0], type: 'folder'});
+                        } else {
+                            items.set(relativePath, { path: cursor.key, name: relativePath, type: 'file' });
+                        }
+                    }
+                    cursor.continue();
+                } else {
+                    resolve({ items: Array.from(items.values()) });
+                }
+            };
+    
+            objectStore.openCursor().onerror = function (event) {
+                reject(event.target.error);
+            };
+        });
+    }    
 };

@@ -1,32 +1,30 @@
 var wm = {
-    wal: function (content, btn1, n, icon) {
-        const windowId = gen(6);
-        const windowContainer = document.createElement('div');
-        windowContainer.className = 'window';
-        windowContainer.id = windowId;
-        windowContainer.style.display = "block";
-        windowContainer.style.zIndex = 2;
-        windowContainer.style.width = '300px';
-        windowContainer.style.height = 'auto';
-        const titleBar = document.createElement('div');
-        titleBar.className = 'd';
-        titleBar.style.border = "none";
-        titleBar.style.borderRadius = "12px";
-        titleBar.style.padding = "10px";
-        if (!n) { n = "Okay" }
-        titleBar.innerHTML = content + `<p style="display: flex; justify-content: space-between;"><button class="b1 wc" style="flex: 1;" onmousedown="clapp('${windowId}');dest('${windowId}');">Close</button><button class="b1 wc" style="flex: 1; ${btn1 ? '' : 'display: none;'}" onmousedown="clapp('${windowId}');dest('${windowId}');${btn1}">${n}</button></p>`;
-        windowContainer.appendChild(titleBar);
-        document.body.appendChild(windowContainer);
-        touch();
-        if (icon) {
-            opapp(windowId, 'Alert', icon);
-        } else {
-            opapp(windowId, 'Alert');
+    wal: function (content, btn1, name, opt) {
+        const win = tk.mbw('Erase Confirmation', '300px', 'auto', undefined, undefined, undefined);
+        win.win.querySelector('.tb').remove();
+        win.main.className = "d";
+        wd.win();
+        win.main.style.padding = "8px";
+        const thing = document.createElement('div');
+        thing.innerHTML = content;
+        const thing2 = document.createElement('div');
+        win.main.appendChild(thing);
+        win.main.appendChild(thing2);
+        if (opt !== "noclose") {
+            tk.cb('b1', 'Close', function () { ui.dest(win.win, 100); ui.dest(win.tbn, 100); }, thing2);
+        }
+
+        if (btn1 !== undefined) {
+            const btn = tk.cb('b1', name, function () { ui.dest(win.win, 100); ui.dest(win.tbn, 100); }, thing2);
+            btn.addEventListener('click', btn1);
         }
     },
-    
-    center: function (el) {
-        const element = document.getElementById(el);
+
+    open: function el(name, ele) {
+
+    },
+
+    center: function (element) {
         const screenWidth = window.innerWidth;
         const screenHeight = window.innerHeight;
         const elementWidth = element.offsetWidth;
@@ -36,40 +34,7 @@ var wm = {
         element.style.left = `${leftPosition}px`;
         element.style.top = `${topPosition}px`;
     },
-    
-    open: function (id, name, img) {
-        hidef('gomenu');
-        const div = document.getElementById(id);
-        const check = document.getElementById("btn_" + id);
-        const switcher = document.getElementById('taskbara');
-        if (div && !check) {
-            div.style.display = "block";
-            centerel(id);
-            div.style.zIndex = highestZIndex + 1;
-            $('.window').removeClass('winf');
-            div.classList.add('winf');
-            const btn = document.createElement('img');
-            btn.className = "tbi";
-            btn.id = "btn_" + id;
-            btn.addEventListener('mouseover', function () { showf('taskapp', 0); document.getElementById('taskapp').innerHTML = name; });
-            switcher.addEventListener('mouseleave', function () { hidef('taskapp', 140); });
-            if (img) {
-                btn.src = img;
-            } else {
-                btn.src = "./assets/img/apps/notfound.svg";
-            }
-            btn.onclick = function () {
-                maxi(id);
-            };
-            if (switcher) {
-                document.getElementById('taskbara').appendChild(btn);
-            }
-        } else {
-            log('<!> Error making window.');
-            log('   <i> Window: ' + div);
-            log('   <i> Button: ' + check);
-        }
-    },
+
     notif: function (message, name, onclick) {
         const note = document.createElement('div');
         note.classList = "notif";
@@ -108,7 +73,7 @@ var wm = {
             log(`<!> Error closing window. Window: ${div} - Button: ${document.getElementById(fuck)}`);
         }
     },
-    
+
     max: function (id) {
         const wid = document.getElementById(id);
         if (wid) {
@@ -121,20 +86,20 @@ var wm = {
             }
         }
     },
-    
+
     mini: function (window) {
         hidef(window, 120);
     },
-    
+
     mini: function (window) {
         showf(window, 0);
     },
 
     notif: function (name, cont, mode) {
-       const div = tk.c('div', document.getElementById('notif'), 'notif');
-       tk.p(name, 'smt', div);
-       tk.p(cont, undefined, div);
-       $(div).fadeIn(80);
-       div.addEventListener('click', function () {div.remove()});
+        const div = tk.c('div', document.getElementById('notif'), 'notif');
+        tk.p(name, 'bold', div);
+        tk.p(cont, undefined, div);
+        $(div).fadeIn(80);
+        div.addEventListener('click', function () { div.remove() });
     }
 }

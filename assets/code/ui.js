@@ -79,6 +79,14 @@ var ui = {
         for (let i = 0; i < usernameElements.length; i++) {
             usernameElements[i].textContent = val;
         }
+    },
+    center: function (element) {
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+        const elementWidth = element.offsetWidth;
+        const elementHeight = element.offsetHeight;
+        element.style.left = `${(screenWidth - elementWidth) / 2}px`;
+        element.style.top = `${(screenHeight - elementHeight) / 2}px`;
     }
 }
 
@@ -125,9 +133,9 @@ var tk = {
             ele.appendChild(button);
         }
         return button;
-    },  
+    },
     a: function (ele1, ele2) {
-       ele1.appendChild(ele2);
+        ele1.appendChild(ele2);
     },
     mbw: function (title, wid, hei, full, min, quit) {
         var windowDiv = document.createElement('div');
@@ -141,10 +149,12 @@ var tk = {
         navigationButtonsDiv.classList.add('tnav');
         var closeButton = document.createElement('div');
         closeButton.classList.add('winb');
+        const tbn = tk.cb('b1', title, () => ui.show(windowDiv, 100), el.tr);
         if (quit === undefined) {
             closeButton.classList.add('red');
             closeButton.addEventListener('mousedown', function () {
-                wm.clapp(windowDiv.id); ui.dest(windowDiv.id, 100);
+                ui.dest(windowDiv, 100);
+                ui.dest(tbn, 100);
             });
         }
 
@@ -153,7 +163,7 @@ var tk = {
         if (min === undefined) {
             minimizeButton.classList.add('yel');
             minimizeButton.addEventListener('mousedown', function () {
-                mini(windowDiv.id);
+                ui.hide(windowDiv, 100);
             });
         }
         var maximizeButton = document.createElement('div');
@@ -164,6 +174,7 @@ var tk = {
                 max(windowDiv.id);
             });
         }
+
         navigationButtonsDiv.appendChild(closeButton);
         navigationButtonsDiv.appendChild(minimizeButton);
         navigationButtonsDiv.appendChild(maximizeButton);
@@ -177,7 +188,7 @@ var tk = {
         contentDiv.classList.add('content');
         windowDiv.appendChild(contentDiv);
         document.body.appendChild(windowDiv);
-        wd.win(); $(windowDiv).fadeIn(130);
-        return {win: windowDiv, main: contentDiv};
-   }
+        wd.win(); $(windowDiv).fadeIn(130); ui.center(windowDiv);
+        return { win: windowDiv, main: contentDiv, tbn };
+    }
 }
