@@ -18,13 +18,13 @@ var app = {
         runs: true,
         name: 'Settings',
         init: function () {
-            const main = tk.mbw('Title Test', '300px', 'auto', true, undefined, undefined);
+            const main = tk.mbw('Settings', '300px', 'auto', true, undefined, undefined);
             const generalPane = tk.c('div', main.main, 'hide');
             const mainPane = tk.c('div', main.main);
             tk.p('Settings', undefined, mainPane);
             tk.p('General', undefined, generalPane);
             tk.cb('b1 b2', 'General', () => ui.sw2(mainPane, generalPane), mainPane);
-            tk.cb('b1 b2', 'Erase This WebDesk', () => wm.wal(`<p>Warning: Erasing this WebDesk will destroy all data stored on it, and you'll need to do setup again.</p>`, () => fs.erase('reboot'), 'Erase'), generalPane);
+            tk.cb('b1 b2 red', 'Erase This WebDesk', () => wm.wal(`<p>Warning: Erasing this WebDesk will destroy all data stored on it, and you'll need to do setup again.</p>`, () => fs.erase('reboot'), 'Erase'), generalPane);
             tk.cb('b1', 'Back', () => ui.sw2(generalPane, mainPane), generalPane);
         }
     },
@@ -134,10 +134,17 @@ var app = {
             }
 
             await navto('/');
-
-            if (await fs.read('/user/info/dontshowfilesnotif') !== 'y') {
-                wm.wal(`<p>Welcome to new Files</p><p>Things can still be stored in folders, but everything's shown in one view.</p><p>Use the searchbar to find anything, or manually (kinda) use the old view!</p>`, () => fs.write('/user/info/dontshowfilesnotif', 'y'), `Don't show again`);
-            }
+        }
+    },
+    about: {
+        runs: true,
+        name: 'About',
+        init: async function () {
+            const win = tk.mbw('About', '300px', 'auto', true, undefined, undefined);
+            const p1 = tk.c('p', win.main);
+            p1.innerHTML = `Version: ${abt.ver}`;
+            const p2 = tk.c('p', win.main);
+            p2.innerHTML = `Latest update: ${abt.lastmod}`;
         }
     }
 };
