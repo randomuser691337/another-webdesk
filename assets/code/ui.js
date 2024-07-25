@@ -3,6 +3,23 @@ var ui = {
         const root = document.documentElement;
         root.style.setProperty(`--${varName}`, `${varValue}`);
     },
+    theme: function (background1, background2, shade1, shade2, accent) {
+        ui.cv('bg1', background1); ui.cv('bg2', background2); ui.cv('sh1', shade1); ui.cv('sh2', shade2);
+        ui.cv('accent', accent);
+    },
+    crtheme: async function (hex) {
+        const a = ui.hextool(hex, 20)
+        ui.theme(ui.hextool(hex, 10), a, ui.hextool(hex, 30), ui.hextool(hex, 40), ui.hextorgb(hex));
+        await fs.write('/user/info/color', hex);
+        if (sys.autodarkacc === true) {
+            const silly = ui.hexdark(a);
+            if (silly === true) {
+                wd.dark();
+            } else {
+                wd.light();
+            }
+        }
+    },
     sw: function (d1, d2) {
         const dr1 = document.getElementById(d1);
         const dr2 = document.getElementById(d2);
@@ -87,6 +104,53 @@ var ui = {
         const elementHeight = element.offsetHeight;
         element.style.left = `${(screenWidth - elementWidth) / 2}px`;
         element.style.top = `${(screenHeight - elementHeight) / 2}px`;
+    },
+    hextool: function (hex, percent) {
+        if (hex.startsWith('#')) {
+            hex = hex.slice(1);
+        }
+
+        let r = parseInt(hex.substring(0, 2), 16);
+        let g = parseInt(hex.substring(2, 4), 16);
+        let b = parseInt(hex.substring(4, 6), 16);
+
+        percent = percent / 100;
+        let adjustment = percent < 0.5 ? 255 * (0.5 - percent) : 255 * (percent - 0.5);
+
+        if (percent < 0.5) {
+            r = Math.min(255, r + adjustment);
+            g = Math.min(255, g + adjustment);
+            b = Math.min(255, b + adjustment);
+        } else {
+            r = Math.max(0, r - adjustment);
+            g = Math.max(0, g - adjustment);
+            b = Math.max(0, b - adjustment);
+        }
+
+        r = Math.round(r).toString(16).padStart(2, '0');
+        g = Math.round(g).toString(16).padStart(2, '0');
+        b = Math.round(b).toString(16).padStart(2, '0');
+
+        return `#${r}${g}${b}`;
+    },
+    hexdark: function (hex) {
+        hex = hex.replace(/^#/, '');
+
+        let bigint = parseInt(hex, 16);
+        let r = (bigint >> 16) & 255;
+        let g = (bigint >> 8) & 255;
+        let b = bigint & 255;
+
+        let luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+        return luminance < 128;
+    },
+    hextorgb: function (hex) {
+        hex = hex.replace(/^#/, '');
+        let bigint = parseInt(hex, 16);
+        let r = (bigint >> 16) & 255;
+        let g = (bigint >> 8) & 255;
+        let b = bigint & 255;
+        return `${r}, ${g}, ${b}`;
     }
 }
 

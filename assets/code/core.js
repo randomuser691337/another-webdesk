@@ -137,6 +137,20 @@ var wd = {
     },
     reboot: function () {
         window.location.reload();
+    },
+    dark: function () {
+        ui.cv('ui1', 'rgb(40, 40, 40, 0.6)');
+        ui.cv('ui2', '#1b1b1b');
+        ui.cv('ui3', '#2b2b2b');
+        ui.cv('font', '#fff');
+        fs.write('/user/info/lightdark', 'dark');
+    },
+    light: function () {
+        ui.cv('ui1', 'rgb(255, 255, 255, 0.6)');
+        ui.cv('ui2', '#ffffff');
+        ui.cv('ui3', '#dddddd');
+        ui.cv('font', '#000');
+        fs.del('/user/info/lightdark');
     }
 }
 

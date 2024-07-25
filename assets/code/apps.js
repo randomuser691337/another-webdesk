@@ -17,15 +17,47 @@ var app = {
     settings: {
         runs: true,
         name: 'Settings',
-        init: function () {
+        init: async function () {
             const main = tk.mbw('Settings', '300px', 'auto', true, undefined, undefined);
             const generalPane = tk.c('div', main.main, 'hide');
+            const appearPane = tk.c('div', main.main, 'hide');
             const mainPane = tk.c('div', main.main);
+            // Main pane
             tk.p('Settings', undefined, mainPane);
-            tk.p('General', undefined, generalPane);
             tk.cb('b1 b2', 'General', () => ui.sw2(mainPane, generalPane), mainPane);
+            tk.cb('b1 b2', 'Appearance', () => ui.sw2(mainPane, appearPane), mainPane);
+            // General pane
+            tk.p('General', undefined, generalPane);
             tk.cb('b1 b2 red', 'Erase This WebDesk', () => wm.wal(`<p>Warning: Erasing this WebDesk will destroy all data stored on it, and you'll need to do setup again.</p>`, () => fs.erase('reboot'), 'Erase'), generalPane);
             tk.cb('b1', 'Back', () => ui.sw2(generalPane, mainPane), generalPane);
+            // Appearance pane
+            tk.p('Appearance', undefined, appearPane);
+            const bg1 = tk.c('input', appearPane, 'i1');
+            bg1.setAttribute("data-jscolor", "{}");
+            bg1.addEventListener('input', function () {
+                ui.crtheme(event.target.value);
+            });
+            new JSColor(bg1, undefined);
+            tk.p('UI Theme', undefined, appearPane);
+            tk.cb('b1 b2', 'Dark mode', function () {
+                fs.del('/user/info/lightdarkpref');
+                wd.dark();
+            }, appearPane);
+            tk.cb('b1 b2', 'Auto (based off color picker)', async function () {
+                fs.write('/user/info/lightdarkpref', 'auto');
+                const killyourselfapplesheep = await fs.read('/user/info/color');
+                ui.crtheme(killyourselfapplesheep);
+                sys.autodarkacc = true;
+            }, appearPane);
+            tk.cb('b1 b2', 'Light mode', function () {
+                fs.del('/user/info/lightdarkpref');
+                wd.light();
+            }, appearPane);
+            tk.p('Other', undefined, appearPane);
+            tk.cb('b1', 'Reset Colors', function () {
+                fs.del('/user/info/color');
+                wm.wal('Reboot to finish resetting colors.', () => wd.reboot(), 'Reboot');
+            }, appearPane); tk.cb('b1', 'Back', () => ui.sw2(appearPane, mainPane), appearPane);
         }
     },
     setup: {
@@ -110,8 +142,8 @@ var app = {
                 items.innerHTML = "";
                 breadcrumbs.innerHTML = "";
                 let crumbs = path.split('/').filter(Boolean);
-                tk.cb('flist', 'Root', () => navto('/'), breadcrumbs);
                 let currentp = '/';
+                tk.cb('flist', 'Root', () => navto('/'), breadcrumbs);
                 crumbs.forEach((crumb, index) => {
                     currentp += crumb + '/';
                     tk.cb('flists', '/', undefined, breadcrumbs);
@@ -124,16 +156,14 @@ var app = {
                 const thing = await fs.ls(path);
                 thing.items.forEach(function (thing) {
                     if (thing.type === "folder") {
-                        tk.cb('flist width', thing.path, () => navto(thing.path + "/"), items);
+                        tk.cb('flist width', "Folder: " + thing.name, () => navto(thing.path + "/"), items);
                     } else {
-                        tk.cb('flist width', thing.path, async function () { const yeah = await fs.read(thing.path); wm.wal(yeah); }, items);
+                        tk.cb('flist width', "File: " + thing.name, async function () { const yeah = await fs.read(thing.path); wm.wal(yeah); }, items);
                     }
-
-                    console.log(thing.path);
                 });
             }
 
-            await navto('/');
+            navto('/');
         }
     },
     about: {

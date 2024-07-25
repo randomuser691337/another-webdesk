@@ -5,7 +5,7 @@
     --bg2: #ccccff;
     --accent: 60, 70, 235;
     --acc: var(--accent);
-    --ui1: rgb(255, 255, 255, 0.5);
+    --ui1: rgb(255, 255, 255, 0.6);
     --ui2: #ffffff;
     --ui3: #dddddd;
     --font: #000;
@@ -645,6 +645,7 @@ p {
     padding: 4px;
     border: none;
     border-radius: 9px;
+    font-family: 'PoppinsB', Arial;
 }
 
 .flist:hover {
@@ -654,6 +655,7 @@ p {
 .width {
     width: 100%;
     box-sizing: border-box;
+    font-family: 'Poppins', Arial !important;
 }
 
 .flists {
@@ -662,4 +664,5 @@ p {
     padding: 1px;
     border: none;
     border-radius: 9px;
+    font-family: 'PoppinsB', Arial;
 }

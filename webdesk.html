@@ -12,7 +12,7 @@
 </head>
 <script>
     var abt = {
-        lastmod: "July 24, 2024",
+        lastmod: "July 25, 2024",
         ver: "0.0.9",
     }
 
@@ -20,6 +20,7 @@
         deskid: undefined,
         setupd: undefined,
         migrid: 1,
+        autodarkacc: undefined,
     }
 
     var el = {
@@ -43,6 +44,7 @@
 <script src="./assets/lib/jq.js"></script>
 <script src="./assets/lib/jszip.js"></script>
 <script src="./assets/lib/peer.js"></script>
+<script src="./assets/lib/picker.js"></script>
 <script src="./assets/code/core.js"></script>
 <script src="./assets/code/wm.js"></script>
 <script src="./assets/code/services.js"></script>
@@ -55,9 +57,24 @@
         if (sd) {
             const name = await fs.read('/user/info/name');
             const deskid = await fs.read('/system/deskid');
+            const darkpref = await fs.read('/user/info/lightdarkpref');
+            const lightdark = await fs.read('/user/info/lightdark');
+            const color = await fs.read('/user/info/color');
             await wd.desktop(name, deskid, 'wait');
             await ptp.go(deskid);
             sys.setupd = true;
+            
+            if (darkpref === "auto") {
+                sys.autodarkacc = true;
+            } else {
+                sys.autodarkacc = false;
+            }
+            if (lightdark === "dark") {
+                wd.dark();
+            } else {
+                wd.light();
+            }
+            ui.crtheme(color);
         } else {
             const id = gen(8);
             await ptp.go(id);
