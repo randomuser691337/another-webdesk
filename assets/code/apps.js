@@ -1,18 +1,3 @@
-function startmenu() {
-    el.sm = tk.c('div', document.body, 'tbmenu');
-    const btm = el.taskbar.getBoundingClientRect();
-    el.sm.style.bottom = btm.height + btm.x + 4 + "px";
-    for (var key in app) {
-        if (app.hasOwnProperty(key)) {
-            if (app[key].runs) {
-                console.log('<i> This app can run normally!</i>');
-            } else {
-                console.log('<i> fuck off</i>');
-            }
-        }
-    }
-}
-
 var app = {
     settings: {
         runs: true,
@@ -56,6 +41,8 @@ var app = {
             tk.p('Other', undefined, appearPane);
             tk.cb('b1', 'Reset Colors', function () {
                 fs.del('/user/info/color');
+                fs.del('/user/info/lightdark');
+                fs.del('/user/info/lightdarkpref');
                 wm.wal('Reboot to finish resetting colors.', () => wd.reboot(), 'Reboot');
             }, appearPane); tk.cb('b1', 'Back', () => ui.sw2(appearPane, mainPane), appearPane);
         }
@@ -68,7 +55,7 @@ var app = {
             const bar = tk.c('div', main, 'setupbar');
             const tnav = tk.c('div', bar, 'tnav');
             const title = tk.c('div', bar, 'title');
-            tk.cb('b4', 'Start Over', () => console.log(`<!> oops cant do that rn`), tnav);
+            tk.cb('b4', 'Start Over', () => fs.erase('reboot'), tnav);
             tk.cb('b4 time', 'what', undefined, title);
             // first menu
             const first = tk.c('div', main, 'setb');
@@ -80,16 +67,18 @@ var app = {
             const transfer = tk.c('div', main, 'setb hide');
             tk.img('./assets/img/setup/quick.png', 'setupi', transfer);
             tk.p('Quick Start', 'h2', transfer);
-            tk.p('To copy your data, open Backup -> Migrate on the other WebDesk, and enter the code below. If you have the old beta, then click "Copy from old WebDesk". Encryption is no longer available.', undefined, transfer);
-            tk.p('Quick Start', 'h2 deskid', transfer);
+            tk.p('To copy your data, open Backup -> Migrate on the other WebDesk, and enter the code below. This works for the old beta too.', undefined, transfer);
+            tk.p('--------', 'h2 deskid', transfer);
             tk.cb('b1', 'No thanks', () => ui.sw2(transfer, warn), transfer);
-            tk.cb('b1', 'Copy from old WebDesk', () => window.open(`http://localhost:330?mignew=${deskid}`, '_blank'), transfer);
+            transfer.id = "quickstartwdsetup";
             // copying menu
             const copy = tk.c('div', main, 'setb hide');
             tk.img('./assets/img/setup/restore.svg', 'setupi', copy);
-            tk.p('Copying', 'h2', copy);
+            tk.p('Restoring from other WebDesk', 'h2', copy);
             tk.p('This might take a while depending on settings and file size.', undefined, copy);
-            tk.cb('b1', 'Cancel', function () { fs.erase(); ui.sw2(copy, main) }, copy);
+            tk.p('Starting...', 'restpg', copy);
+            tk.cb('b1', 'Cancel', function () { fs.erase('reboot'); }, copy);
+            copy.id = "quickstartwdgoing";
             // warn menu
             const warn = tk.c('div', main, 'setb hide');
             tk.img('./assets/img/noround.png', 'setupi', warn);
@@ -108,27 +97,14 @@ var app = {
             tk.p(`Set up a user for WebDesk to store all your things in, and also set up WebDesk's permissions. Data is stored on your device only.`, undefined, user);
             const input = tk.c('input', user, 'i1');
             input.placeholder = "Enter a name to use with WebDesk/it's services";
-            const notif = tk.c('div', user);
-            tk.p('Allow WebDesk to notify you when someone calls or sends you a file? You can change this later in Settings.', undefined, notif);
-            tk.cb('b1 rb', 'Deny', function () { wd.finishsetup(input.value, user, sum); }, notif); tk.cb('b1', 'Allow', function () {
-                Notification.requestPermission().then(permission => {
-                    if (permission === "granted") {
-                        ui.masschange('notifperms', 'can');
-                        wd.finishsetup(input.value, user, sum);
-                    } else {
-                        const box = wm.cm();
-                        tk.p(`WebDesk wasn't granted notifications.`, undefined, box);
-                        tk.cb('b1 rb', 'Got it', () => wd.finishsetup(input.value, user, sum), box);
-                    }
-                });
-            }, notif);
+            tk.cb('b1', 'Done!', function () {wd.finishsetup(input.value, user, sum)}, user);
             // summary
             const sum = tk.c('div', main, 'setb hide');
             tk.img('./assets/img/setup/check.svg', 'setupi', sum);
-            tk.p('Summary', 'h2', sum);
-            tk.p('WebDesk <span class="med notifperms">cannot</span> send notifications', undefined, sum);
-            tk.p(`WebDesk's current user is <span class="med name">undefined</span>`, undefined, sum);
+            tk.p('All done!', 'h2', sum);
+            tk.p('Have fun! Make sure to check Settings for more options.', undefined, sum);
             tk.cb('b1 rb', 'Erase & restart', function () { fs.erase('reboot'); }, sum); tk.cb('b1', 'Finish setup', function () { wd.reboot(); }, sum);
+            sum.id = "setupdone";
         }
     },
     files: {
@@ -171,10 +147,9 @@ var app = {
         name: 'About',
         init: async function () {
             const win = tk.mbw('About', '300px', 'auto', true, undefined, undefined);
-            const p1 = tk.c('p', win.main);
-            p1.innerHTML = `Version: ${abt.ver}`;
-            const p2 = tk.c('p', win.main);
-            p2.innerHTML = `Latest update: ${abt.lastmod}`;
+            tk.c(`WebDesk`, 'h2', win.main);
+            tk.c(`Version: ${abt.ver}`, undefined, win.main);
+            tk.c(`Latest update: ${abt.lastmod}`, undefined, win.main);
         }
     }
 };

@@ -43,12 +43,11 @@ var ptp = {
 }
 
 function handleData(conn, data) {
-    if (webdrop === true) {
-        if (data.name === "MigrationPackDeskFuckOld") {
-            if (setupd === false) {
-                fesw('setupqs', 'setuprs'); restorefs(data.file);
-            } else {
-                cm(`<p>A migration was attempted. Erase this WebDesk to migrate here.</p><p>If this wasn't you, you should <a onclick="idch();">change your ID.</a></p><button class="b1 b2">Close</button>`, '270px');
+    if (sys.webdrop === true) {
+        console.log('<i> Thing recieved!')
+        if (data.name === "MigrationPackDeskFuck") {
+            if (sys.setupd === false) {
+                ui.sw('setupqs', 'setuprs'); restorefsold(data.file);
             }
         } else if (data.name === "YesImAlive-WebKey") {
             wm.notif(`${data.uname} accepted your WebDrop.`, 'WebDesk Services');
@@ -76,27 +75,35 @@ function handleData(conn, data) {
     }
 }
 
-async function restorefs(zipBlob) {
+async function restorefsold(zipBlob) {
     console.log('<i> Restore Stage 1: Prepare zip');
     try {
-        fesw('setupqs', 'setuprs');
+        ui.sw('quickstartwdsetup', 'quickstartwdgoing');
         const zip = await JSZip.loadAsync(zipBlob);
         const fileCount = Object.keys(zip.files).length;
         let filesDone = 0;
         console.log(`<i> Restore Stage 2: Open zip and extract ${fileCount} files to FS`);
         await Promise.all(Object.keys(zip.files).map(async filename => {
             console.log(`<i> Restoring file: ${filename}`);
-            if (filename === "/system/enckey") {
+            if (filename === "/user/info/name") {
+                const file = zip.files[filename];
+                const value = await file.async("string");
+                fs.write('/user/info/name', value);
+                filesDone++;
+                ui.masschange('restpg', `Restoring ${filesDone}/${fileCount}: Handling user data`);
+            } else if (filename.includes('/system') || filename.includes('/user/info') || filename === '/user/oldhosts.json') {
                 console.log(`<i> Skipped a file: ${filename}`);
-                masschange('restpg', `Restoring ${filesDone}/${fileCount}: Skipped file: WebDesk specific`);
+                filesDone++;
+                ui.masschange('restpg', `Restoring ${filesDone}/${fileCount}: Skipped file: WebDesk specific`);
             } else {
                 const file = zip.files[filename];
                 const value = await file.async("string");
                 fs.write(filename, value);
                 filesDone++;
-                masschange('restpg', `Restoring ${filesDone}/${fileCount}: ${filename}`);
+                ui.masschange('restpg', `Restoring ${filesDone}/${fileCount}: ${filename}`);
             }
         }));
+        ui.sw('quickstartwdgoing', 'setupdone');
     } catch (error) {
         console.error('Error during restoration:', error);
     }

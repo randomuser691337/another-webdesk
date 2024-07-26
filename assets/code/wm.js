@@ -4,7 +4,7 @@ var wm = {
         win.win.querySelector('.tb').remove();
         win.main.className = "d";
         wd.win();
-        win.main.style.padding = "8px";
+        win.main.style.padding = "12px";
         const thing = document.createElement('div');
         thing.innerHTML = content;
         const thing2 = document.createElement('div');
