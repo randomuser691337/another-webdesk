@@ -16,6 +16,7 @@
     --rad3: 8px;
     --fz1: 15px;
     --fz2: 12px;
+    --inv: 0;
 }
 
 #background {
@@ -121,6 +122,7 @@ p {
     margin: 3px;
     font-family: 'Poppins', Arial;
     font-size: var(--fz1);
+    filter: invert(var(--inv));
 }
 
 @media (max-width:400px) {
@@ -278,7 +280,7 @@ p {
         transform: translate(-50%, -50%) scale(0.1);
     }
 
-    20% {
+    5% {
         transform: translate(-50%, -50%) scale(0.1);
     }
 
@@ -365,8 +367,8 @@ p {
 
     @keyframes circle2 {
         0% {
-            right: -60vw;
-            bottom: -60vw;
+            right: -70vw;
+            bottom: -70vw;
         }
 
         100% {
@@ -377,8 +379,8 @@ p {
 
     @keyframes circle {
         0% {
-            left: -60vw;
-            top: -60vw;
+            left: -70vw;
+            top: -70vw;
         }
 
         100% {
@@ -408,8 +410,8 @@ p {
 
     @keyframes circle2 {
         0% {
-            right: -60vw;
-            bottom: -60vw;
+            right: -70vw;
+            bottom: -70vw;
         }
 
         100% {
@@ -420,8 +422,8 @@ p {
 
     @keyframes circle {
         0% {
-            left: -60vw;
-            top: -60vw;
+            left: -70vw;
+            top: -70vw;
         }
 
         100% {
@@ -631,12 +633,18 @@ p {
     box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 75px 15px;
     backdrop-filter: blur(var(--bl2));
     -webkit-backdrop-filter: blur(var(--bl2));
-    padding: 4px;
+    padding: 10px;
     max-width: 80%;
+    max-width: 360px;
     max-height: 80%;
-    height: auto;
     left: 5px;
     z-index: 4;
+    animation: tb2 0.28s;
+}
+
+@keyframes tb2 {
+    0% {bottom: 90px; opacity: 0%;}
+    100% {opacity: 100%;}
 }
 
 .flist {

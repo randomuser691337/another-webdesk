@@ -49,8 +49,8 @@ var wm = {
         document.getElementById('notif').appendChild(note);
         document.getElementById('notifold').appendChild(note2);
         ui.play('./assets/other/webdrop.ogg');
-        note.addEventListener('click', function () { dest(id, '100'); });
-        note2.addEventListener('click', function () { dest(id2, '100'); });
+        note.addEventListener('click', function () { ui.dest(note, 140); });
+        note2.addEventListener('click', function () { ui.dest(note2, 140); });
         setTimeout(function () { ui.dest(id, 200); }, 20000);
         dest('defnotif');
     },

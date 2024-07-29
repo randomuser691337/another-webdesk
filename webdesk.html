@@ -12,7 +12,7 @@
 </head>
 <script>
     var abt = {
-        lastmod: "July 26, 2024",
+        lastmod: "July 29, 2024",
         ver: "0.0.9",
     }
 
@@ -22,6 +22,7 @@
         migrid: 1,
         autodarkacc: undefined,
         webdrop: true,
+        name: "Default User",
     }
 
     var el = {
@@ -72,6 +73,10 @@
             }
             if (lightdark === "dark") {
                 wd.dark();
+            } else if (lightdark === "clear") {
+                wd.clearm();
+            } else if (lightdark === "clear2") {
+                wd.clearm2();
             } else {
                 wd.light();
             }

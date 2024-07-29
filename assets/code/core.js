@@ -82,25 +82,27 @@ var wd = {
         });
     },
     desktop: function (name, deskid, waitopt) {
+        ui.dest(tk.g('setuparea'));
         function startmenu() {
             if (el.sm == undefined) {
                 el.sm = tk.c('div', document.body, 'tbmenu');
                 const btm = el.taskbar.getBoundingClientRect();
                 el.sm.style.bottom = btm.height + btm.x + 4 + "px";
+                tk.p(`Hello, ${name}!`, 'h2', el.sm);
                 for (var key in app) {
                     if (app.hasOwnProperty(key)) {
                         if (app[key].hasOwnProperty("runs") && app[key].runs === true) {
                             console.log('<i> This app can run normally!');
                             const btn = tk.cb('b1', app[key].name, app[key].init.bind(app[key]), el.sm);
                             btn.addEventListener('click', function () {
-                                el.sm.remove();
+                                ui.dest(el.sm, 150);
                                 el.sm = undefined;
                             });
                         }
                     }
                 }
             } else {
-                el.sm.remove();
+                ui.dest(el.sm, 150);
                 el.sm = undefined;
             }
         }
@@ -113,7 +115,7 @@ var wd = {
             tk.cb('b1 time', '--:--', () => wm.notif(`In progress`, `Control Center`), titletb);
         }
         if (waitopt === "wait") {
-            setTimeout(function () { desktopgo(); }, 700);
+            setTimeout(function () { desktopgo(); }, 400);
         } else {
             desktopgo();
         }
@@ -151,6 +153,20 @@ var wd = {
         ui.cv('ui3', '#dddddd');
         ui.cv('font', '#000');
         fs.del('/user/info/lightdark');
+    },
+    clearm: function () {
+        ui.cv('ui1', 'rgb(255, 255, 255, 0)');
+        ui.cv('ui2', 'rgba(var(--accent), 0.1)');
+        ui.cv('ui3', 'rgba(var(--accent) 0.2)');
+        ui.cv('font', '#000');
+        fs.write('/user/info/lightdark', 'clear');
+    },
+    clearm2: function () {
+        ui.cv('ui1', 'rgb(255, 255, 255, 0)');
+        ui.cv('ui2', 'rgba(var(--accent), 0.1)');
+        ui.cv('ui3', 'rgba(var(--accent) 0.2)');
+        ui.cv('font', '#fff');
+        fs.write('/user/info/lightdark', 'clear2');
     }
 }
 

@@ -165,6 +165,9 @@ var tk = {
         }
         return ok;
     },
+    g: function (element) {
+        return document.getElementById(element);
+    },
     t: function (ele, text) {
         ele.innerHTML = text;
     },
@@ -185,6 +188,19 @@ var tk = {
         }
         div.appendChild(fuck);
         return fuck;
+    },
+    css: function (href) {
+        const existingLink = Array.from(document.getElementsByTagName('link')).find(
+            link => link.rel === 'stylesheet' && link.href === href
+        );
+
+        if (!existingLink) {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = href;
+            document.head.appendChild(link);
+        }
     },
     cb: function (classn, name, func, ele) {
         const button = document.createElement('button');
@@ -209,8 +225,8 @@ var tk = {
         var titlebarDiv = document.createElement('div');
         titlebarDiv.classList.add('d');
         titlebarDiv.classList.add('tb');
-        var navigationButtonsDiv = document.createElement('div');
-        navigationButtonsDiv.classList.add('tnav');
+        var winbtns = document.createElement('div');
+        winbtns.classList.add('tnav');
         var closeButton = document.createElement('div');
         closeButton.classList.add('winb');
         const tbn = tk.cb('b1', title, () => ui.show(windowDiv, 100), el.tr);
@@ -239,10 +255,10 @@ var tk = {
             });
         }
 
-        navigationButtonsDiv.appendChild(closeButton);
-        navigationButtonsDiv.appendChild(minimizeButton);
-        navigationButtonsDiv.appendChild(maximizeButton);
-        titlebarDiv.appendChild(navigationButtonsDiv);
+        winbtns.appendChild(closeButton);
+        winbtns.appendChild(minimizeButton);
+        winbtns.appendChild(maximizeButton);
+        titlebarDiv.appendChild(winbtns);
         var titleDiv = document.createElement('div');
         titleDiv.classList.add('title');
         titleDiv.innerHTML = title;
@@ -253,6 +269,6 @@ var tk = {
         windowDiv.appendChild(contentDiv);
         document.body.appendChild(windowDiv);
         wd.win(); $(windowDiv).fadeIn(130); ui.center(windowDiv);
-        return { win: windowDiv, main: contentDiv, tbn };
+        return { win: windowDiv, main: contentDiv, tbn, title: titlebarDiv };
     }
 }
