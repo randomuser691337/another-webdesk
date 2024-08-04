@@ -25,8 +25,8 @@ var ui = {
         const dr2 = document.getElementById(d2);
         $(dr1).fadeOut(160, function () { $(dr2).fadeIn(160); });
     },
-    sw2: function (d1, d2) {
-        $(d1).fadeOut(160, function () { $(d2).fadeIn(160); });
+    sw2: function (d1, d2, fadetime) {
+        $(d1).fadeOut(140, function () { $(d2).fadeIn(140); });
     },
     hide: function (dr1, anim) {
         if (dr1) {

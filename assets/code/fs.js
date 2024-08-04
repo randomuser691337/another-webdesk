@@ -51,4 +51,7 @@ var fs = {
     ls: function (path) {
         return this.askwfs('ls', path);
     },
+    getall: function () {
+        return this.askwfs('all');
+    },
 };

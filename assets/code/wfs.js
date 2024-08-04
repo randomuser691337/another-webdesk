@@ -62,6 +62,13 @@ function idbop(operation, params, opt, requestId) {
         case 'list':
             fs2.list(params);
             break;
+        case 'all':
+            fs2.all().then(files => {
+                self.postMessage({ type: 'result', data: files, requestId });
+            }).catch(error => {
+                console.error('Error fetching files:', error);
+            });
+            break;
         case 'ls':
             fs2.folder(params).then(result => {
                 self.postMessage({ type: 'result', data: result, requestId });
@@ -142,16 +149,16 @@ var fs2 = {
             const transaction = db.transaction(['main'], 'readonly');
             const objectStore = transaction.objectStore('main');
             const items = new Map();
-    
+
             objectStore.openCursor().onsuccess = function (event) {
                 const cursor = event.target.result;
                 if (cursor) {
                     if (cursor.key.startsWith(path)) {
                         const relativePath = cursor.key.substring(path.length);
                         const parts = relativePath.split('/');
-    
+
                         if (parts.length > 1) {
-                            items.set(parts[0], { path: path + parts[0], name: parts[0], type: 'folder'});
+                            items.set(parts[0], { path: path + parts[0], name: parts[0], type: 'folder' });
                         } else {
                             items.set(relativePath, { path: cursor.key, name: relativePath, type: 'file' });
                         }
@@ -159,6 +166,46 @@ var fs2 = {
                     cursor.continue();
                 } else {
                     resolve({ items: Array.from(items.values()) });
+                }
+            };
+
+            objectStore.openCursor().onerror = function (event) {
+                reject(event.target.error);
+            };
+        });
+    },
+    all: function () {
+        return new Promise((resolve, reject) => {
+            const transaction = db.transaction(['main'], 'readonly');
+            const objectStore = transaction.objectStore('main');
+            const fileContentsPromises = [];
+    
+            objectStore.openCursor().onsuccess = function (event) {
+                const cursor = event.target.result;
+                if (cursor) {
+                    const key = cursor.key;
+                    const relativePath = key.split('/').pop();
+    
+                    if (!relativePath.includes('.png')) {
+                        const request = objectStore.get(key);
+                        request.onsuccess = function (event) {
+                            const item = event.target.result;
+                            if (item && item.data) {
+                                const decoded = new TextDecoder().decode(item.data);
+                                fileContentsPromises.push(relativePath + ": " + decoded);
+                            } else {
+                                fileContentsPromises.push(null);
+                            }
+                        };
+                        request.onerror = function (event) {
+                            reject(event.target.error);
+                        };
+                    }
+                    cursor.continue();
+                } else {
+                    transaction.oncomplete = function () {
+                        resolve(fileContentsPromises);
+                    };
                 }
             };
     

@@ -53,3 +53,7 @@
     box-sizing: border-box;
     user-select: none;
 }
+
+.browserpad {
+    padding-left: 6px;
+}
