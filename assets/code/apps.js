@@ -14,6 +14,7 @@ var app = {
             // General pane
             tk.p('General', undefined, generalPane);
             tk.cb('b1 b2 red', 'Erase This WebDesk', () => wm.wal(`<p>Warning: Erasing this WebDesk will destroy all data stored on it, and you'll need to do setup again.</p>`, () => fs.erase('reboot'), 'Erase'), generalPane);
+            tk.cb('b1 b2 red', 'Preload SelfQNA content', function () { fs.write('/user/demo/steak', `A steak is a thick cut of meat generally sliced across the muscle fibers, sometimes including a bone. It is normally grilled or fried. Steak can be diced, cooked in sauce, such as in steak and kidney pie, or minced and formed into patties, such as hamburgers. Steaks are cut from animals including cattle, bison, buffalo, camel, goat, horse, kangaroo,[1][2] sheep, ostrich, pigs, turkey, and deer, as well as various types of fish, especially salmon and large fish such as swordfish, shark, and marlin. For some meats, such as pork, lamb and mutton, chevon, and veal, these cuts are often referred to as chops. Some cured meat, such as gammon, is commonly served as steak.`); wm.wal(`<p>Preloaded article on steak, ask SelfQNA "what is steak"</p>`) }, generalPane);
             tk.cb('b1', 'Back', () => ui.sw2(generalPane, mainPane), generalPane);
             // Appearance pane
             tk.p('Appearance', undefined, appearPane);
@@ -185,7 +186,7 @@ var app = {
             const unload = tk.cb('b1', 'Unload model from RAM', async () => {
                 sys.model = undefined;
                 finish.innerText = "Model unloaded successfully";
-                setTimeout(function () {finish.innerText = "Ask your WebDesk a question...";}, 3000)
+                setTimeout(function () { finish.innerText = "Ask your WebDesk a question..."; }, 3000)
             }, win.main);
             const button = tk.cb('b1', 'Ask!', async () => {
                 finish.innerText = "Loading files...";
