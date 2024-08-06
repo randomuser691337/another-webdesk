@@ -576,6 +576,10 @@ p {
     background-color: rgba(230, 30, 30, 0.5);
 }
 
+.yb {
+    background-color: rgba(255, 220, 30, 0.5);
+}
+
 .taskbar {
     position: fixed;
     display: flex;

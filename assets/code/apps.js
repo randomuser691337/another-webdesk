@@ -115,7 +115,7 @@ var app = {
             const sum = tk.c('div', main, 'setb hide');
             tk.img('./assets/img/setup/check.svg', 'setupi', sum);
             tk.p('All done!', 'h2', sum);
-            tk.p('Have fun! Make sure to check Settings for more options.', undefined, sum);
+            tk.p('Make sure to check Settings for more options.', undefined, sum);
             tk.cb('b1 rb', 'Erase & restart', function () { fs.erase('reboot'); }, sum); tk.cb('b1', 'Finish setup', function () { wd.reboot(); }, sum);
             sum.id = "setupdone";
         }
@@ -179,15 +179,16 @@ var app = {
         name: 'SelfQNA',
         init: async function () {
             const win = tk.mbw('SelfQNA', '380px', 'auto', true, undefined, undefined);
-            tk.p(`Searches WebDesk's filesystem for something you ask for, and might return an answer.`, undefined, win.main);
-            const i = tk.c('input', win.main, 'i1');
+            const main = tk.c('div', win.main, '');
+            tk.p(`Searches WebDesk's filesystem for something you ask for, and might return an answer.`, undefined, main);
+            const i = tk.c('input', main, 'i1');
             i.placeholder = "Ask your WebDesk a question...";
             let finish;
             const unload = tk.cb('b1', 'Unload model from RAM', async () => {
                 sys.model = undefined;
                 finish.innerText = "Model unloaded successfully";
                 setTimeout(function () { finish.innerText = "Ask your WebDesk a question..."; }, 3000)
-            }, win.main);
+            }, main);
             const button = tk.cb('b1', 'Ask!', async () => {
                 finish.innerText = "Loading files...";
                 try {
@@ -197,62 +198,94 @@ var app = {
                 } catch (error) {
                     finish.innerText = "Error occurred: " + error.message;
                 }
-            }, win.main);
-            finish = tk.p('Answers will appear here', undefined, win.main);
+            }, main);
+            finish = tk.p('Answers will appear here', undefined, main);
         }
     },
     browser: {
         runs: true,
         name: 'Browser',
         init: async function () {
-            const win = tk.mbw('Browser', '80vw', '82vh', true, undefined, undefined);
-            ui.dest(win.title, 0);
-            const tabs = tk.c('div', win.main, 'tabbar d');
-            let currenttab = tk.c('div', win.main, 'hide');
-            let currentbtn = tk.c('div', win.main, 'hide');
-            let currentname = tk.c('div', win.main, 'hide');
-            win.main.classList = "browsercont";
             tk.css('./assets/lib/browse.css');
+            const win = tk.mbw('Browser', '80vw', '82vh', true);
+            ui.dest(win.title, 0);
+    
+            const tabs = tk.c('div', win.main, 'tabbar d');
             const btnnest = tk.c('div', tabs, 'tnav');
-            const okiedokie = tk.c('div', tabs, 'browsertitle')
+            const okiedokie = tk.c('div', tabs, 'browsertitle');
             const searchbtns = tk.c('div', okiedokie, 'tnav');
-            const addbtn = tk.cb('b4 browserbutton', '+', function () {
+            const searchnest = tk.c('div', tabs, 'title');
+    
+            let currentTab = tk.c('div', win.main, 'hide');
+            let currentBtn = tk.c('div', win.main, 'hide');
+            let currentName = tk.c('div', win.main, 'hide');
+            let lastUrl = "";
+            const urls = [];
+            win.main.classList = "browsercont";
+    
+            function checkUrlChange(embed) {
+                setTimeout(function () {
+                    const currentUrl = embed.src;
+                    if (currentUrl !== lastUrl) {
+                        lastUrl = currentUrl;
+                        urls.push(currentUrl);
+                    }
+                }, 200);
+            }
+    
+            function addtab() {
                 const tab = tk.c('embed', win.main, 'browsertab');
                 tab.src = "https://meower.xyz";
-                ui.sw2(currenttab, tab);
-                currenttab = tab;
-                const tabbtn = tk.cb('b4 browserpad', '', function () {
-                    ui.sw2(currenttab, tab);
-                    currenttab = tab;
-                    currentbtn = tabtitle;
+                ui.sw2(currentTab, tab);
+                currentTab = tab;
+    
+                const tabBtn = tk.cb('b4 browserpad', '', function () {
+                    ui.sw2(currentTab, tab);
+                    currentTab = tab;
+                    currentBtn = tabTitle;
                 }, btnnest);
-                const tabtitle = tk.c('span', tabbtn);
-                tabtitle.innerText = "meower.xyz";
-                currentname = tabtitle;
-                currentbtn = tabtitle;
-                const closetab = tk.cb('browserclosetab', 'x', function () {
-                    ui.dest(tabbtn); ui.dest(currenttab);
-                }, tabbtn);
-            }, searchbtns);
-            const close = tk.cb('b4 rb browserbutton', 'x', function () {
+                const tabTitle = tk.c('span', tabBtn);
+                tabTitle.innerText = "meower.xyz";
+                currentName = tabTitle;
+                currentBtn = tabTitle;
+    
+                const closeTabBtn = tk.cb('browserclosetab', 'x', function () {
+                    ui.dest(tabBtn);
+                    ui.dest(currentTab);
+                }, tabBtn);
+    
+                checkUrlChange(tab);
+            }
+    
+            tk.cb('b4 browserbutton', '+', addtab, searchbtns);
+            tk.cb('b4 rb browserbutton', 'x', function () {
                 ui.dest(win.win, 150);
                 ui.dest(win.tbn, 150);
             }, btnnest);
-            const rel = tk.cb('b4 browserbutton', '⟳', function () {
+            tk.cb('b4 yb browserbutton', '-', function () {
+                ui.hide(win.win, 150);
+            }, btnnest);
+            tk.cb('b4 browserbutton', '⟳', function () {
+                currentTab.src = currentTab.src;
             }, searchbtns);
-            const back = tk.cb('b4 browserbutton', '<', function () {
+            tk.cb('b4 browserbutton', '<', function () {
+                currentTab.contentWindow.history.go(-1);
             }, searchbtns);
-            const rev = tk.cb('b4 browserbutton', '>', function () {
-
+            tk.cb('b4 browserbutton', '>', function () {
+                currentTab.contentWindow.history.go(1);
             }, searchbtns);
-            const searchnest = tk.c('div', tabs, 'title');
-            const search = tk.c('input', okiedokie, 'i1 browserbutton');
-            search.placeholder = "Enter URL";
-            const go = tk.cb('b4 browserbutton', 'Go!', function () {
-                currenttab.src = "https://" + search.value;
-                currentbtn.innerText = search.value;
+    
+            // Add the search input and button
+            const searchInput = tk.c('input', okiedokie, 'i1 browserbutton');
+            searchInput.placeholder = "Enter URL";
+            tk.cb('b4 browserbutton', 'Go!', function () {
+                currentTab.src = "https://" + searchInput.value;
+                currentBtn.innerText = searchInput.value;
             }, okiedokie);
-            wd.win(); addbtn.click();
+    
+            // Initialize the browser window with one tab
+            wd.win();
+            addTab();
         }
-    }
+    }    
 };

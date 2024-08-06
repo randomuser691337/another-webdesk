@@ -15,25 +15,49 @@
     var setupd;
 </script>
 <style>
+    :root {
+        --accent: 120, 120, 130 !important;
+    }
+
     .b2 {
         border-radius: 12px;
         box-sizing: border-box;
         width: 100%;
         padding: 6px;
         padding-left: 8px;
-        background-color: var(--ui2);
+        background-color: #fff;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 3px;
+        margin-bottom: 4px;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 7.5px 1.5px;
     }
 
     .old {
-        background-color: #ffddee;
+        background-color: #e3e3e3;
+    }
+
+    @keyframes bootbg {
+        0% {
+            background-color: #000;
+        }
+
+        100% {
+            background-color: #ccccee;
+        }
     }
 
     body {
-        background-color: #9999ff;
+        animation: bootbg 0.9s;
+        background-color: #ccccee;
+    }
+
+    #curtain {
+        position: fixed;
+        left: 0px; right: 0px; top: 0px; bottom: 0px;
+        z-index: 99;
+        background-color: #000;
+        display: none;
     }
 </style>
 
@@ -48,12 +72,13 @@
                 <div class="title"><button class="time b4">--:--</button></div>
             </div>
             <div id="setup1" class="setb">
-                <img src="./assets/img/setup/first.svg" class="setupi"></img>
+                <img src="./assets/img/icons/disk.svg" class="setupi"></img>
                 <p class="h2">Select a version to boot</p>
-                <p style="margin-bottom: 8px;">Anything light red is no longer supported.</p>
+                <p style="margin-bottom: 8px;">Anything grey is no longer supported.</p>
                 <div class="b2">
                     <div class="tnav">WebDesk 0.0.9 Beta 3</div>
-                    <div class="title"><button class="b4">Recovery</button><button class="b4" onclick="op('./webdesk.html');">Boot</button></div>
+                    <div class="title"><button class="b4">Recovery</button><button class="b4"
+                            onclick="op('./webdesk.html');">Boot</button></div>
                 </div>
                 <div class="b2 old">
                     <div class="tnav">WebDesk 0.0.9 Beta 2</div>
@@ -69,10 +94,15 @@
             </div>
         </div>
     </div>
+    <div id="curtain">
+
+    </div>
 </body>
 <script>
     function op(src) {
-        window.location.href = src;
+        ui.show(document.getElementById('curtain'), 300);
+        setTimeout(function () { window.location.href = src; }, 270);
+        setTimeout(function () { ui.hide(document.getElementById('curtain'), 300); }, 700);
     }
 </script>
 

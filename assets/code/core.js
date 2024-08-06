@@ -92,7 +92,6 @@ var wd = {
                 for (var key in app) {
                     if (app.hasOwnProperty(key)) {
                         if (app[key].hasOwnProperty("runs") && app[key].runs === true) {
-                            console.log('<i> This app can run normally!');
                             const btn = tk.cb('b1', app[key].name, app[key].init.bind(app[key]), el.sm);
                             btn.addEventListener('click', function () {
                                 ui.dest(el.sm, 150);
